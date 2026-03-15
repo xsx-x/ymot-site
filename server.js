@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // הכנס כאן את מזהה הגיליון שלך
-const SHEET_ID = '<YOUR_SHEET_ID>';
+const SHEET_ID = '1IGtJOl3Rzpv6mSphefHIVC3Sgxke9Qek9BsdvMVffCc';
 const doc = new GoogleSpreadsheet(SHEET_ID);
 
 // בשביל גישה פשוטה, השתמש ב-API key או Service Account JSON
