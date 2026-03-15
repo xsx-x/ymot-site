@@ -9,13 +9,14 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-// הכנס כאן את מזהה הגיליון שלך
+// מזהה הגיליון (תכניס את מזהה ה‑Sheet שלך)
 const SHEET_ID = '1IGtJOl3Rzpv6mSphefHIVC3Sgxke9Qek9BsdvMVffCc';
 const doc = new GoogleSpreadsheet(SHEET_ID);
 
-// בשביל גישה פשוטה, השתמש ב-API key או Service Account JSON
-// כאן נניח שימוש ב-API key פתוח
-doc.useApiKey('<YOUR_API_KEY>');
+// נטען את ה‑Service Account מה‑Secret של Vercel
+const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+
+doc.useServiceAccountAuth(serviceAccount);
 
 async function getSheet() {
     await doc.loadInfo();
@@ -36,7 +37,6 @@ app.post('/api/addText', async (req, res) => {
 app.get('/api/getText', async (req, res) => {
     const id = req.query.id;
     const sheet = await getSheet();
-    await sheet.loadCells();
     const rows = await sheet.getRows();
     const row = rows.find(r => r.ID === id);
     if (row) {
