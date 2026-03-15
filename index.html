@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>טקסטים לימות המשיח</title>
+</head>
+<body>
+    <h1>הוספת טקסט חדש</h1>
+    <form id="textForm">
+        <input type="text" id="textId" placeholder="מזהה ייחודי"><br><br>
+        <textarea id="textContent" placeholder="הכנס כאן את הטקסט..." rows="5" cols="40"></textarea><br><br>
+        <button type="submit">שמור טקסט</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('textForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('textId').value;
+            const content = document.getElementById('textContent').value;
+
+            const response = await fetch('/api/addText', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, content })
+            });
+
+            const result = await response.json();
+            if(result.success){
+                alert("הטקסט נשמר בהצלחה!");
+                form.reset();
+            } else {
+                alert("שגיאה: " + result.error);
+            }
+        });
+    </script>
+</body>
+</html>
